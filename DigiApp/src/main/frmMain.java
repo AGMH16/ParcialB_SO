@@ -23,7 +23,8 @@ import java.util.*;
  *
  * @author Miguel Matul <https://github.com/MigueMat4>
  */
-public class frmMain extends javax.swing.JFrame {
+public class frmMain extends javax.swing.JFrame implements Runnable {
+
     String hora, minutos, segundos, ampm;
     Calendar calendario;
     Thread h1;
@@ -32,7 +33,7 @@ public class frmMain extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel(columnas, 0); // tabla a usar
     DigiWorld yggdrasill; // clase para conectarse a la API y descargar el listado de objetos
     RumbleArena estadio; // clase para elegir a los digimon que van a pelar, carga la imagen de ellos
-    Reloj reloj = new Reloj(); // objeto para la hora del sistema. ¡No modificar!
+    // Reloj reloj = new Reloj(); // objeto para la hora del sistema. ¡No modificar!
 
     /**
      * Creates new form frmMain
@@ -41,13 +42,30 @@ public class frmMain extends javax.swing.JFrame {
         initComponents();
         tblDigimon.setModel(model); // diseña la tabla en base a las columnas definidas
         btnBatalla.setEnabled(false); // no se puede batallar si no hay digimons peleadores
-        reloj.start(); // objeto iniciado para la hora del sistema. ¡No modificar!
+        //reloj.start(); // objeto iniciado para la hora del sistema. ¡No modificar!
         h1 = new Thread((Runnable) this);
         h1.start();
     }
-    
+
+    @Override
+    public void run() {
+        //Acá
+        Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
+            try {
+                Thread.sleep(1000);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     // clase para elegir a los peleadores
     public class RumbleArena {
+
         public void elegirDigimon() {
             btnElegir.setEnabled(false);
             btnBatalla.setEnabled(false);
@@ -58,7 +76,7 @@ public class frmMain extends javax.swing.JFrame {
             try {
                 URL url = new URL(peleador1.getImg());
                 Image img = ImageIO.read(url);
-                img = img.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH);
+                img = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
                 lblDigimon1.setIcon(new ImageIcon(img));
             } catch (MalformedURLException ex) {
                 Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,7 +86,20 @@ public class frmMain extends javax.swing.JFrame {
             lblDigimon1.setText(peleador1.getName());
             // código para elegir al segundo peleador
             // <Inserte su código aquí>
+             int digielecto2 = (int) ((Math.random() * ((yggdrasill.getDigimons().size() - 1) - 0)) + 0);
+            peleador2 = yggdrasill.getDigimons().get(digielecto2);
+            try {
+                URL url = new URL(peleador2.getImg());
+                Image img = ImageIO.read(url);
+                img = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+                lblDigimon2.setIcon(new ImageIcon(img));
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("¡Peladores listos para la batalla!");
+             JOptionPane.showMessageDialog(null, "¡Peladores listos para la batalla!");
             btnElegir.setEnabled(true);
             btnBatalla.setEnabled(true);
         }
@@ -221,38 +252,54 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnBatallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatallaActionPerformed
         // código para elegir un ganador en la batalla
-        int nivel1=1, nivel2=1; // variables que representarán los niveles de los digimon
+        int nivel1 = 1, nivel2 = 1; // variables que representarán los niveles de los digimon
         System.out.println("Pelea en curso ...");
         // Peleador 1
         if (peleador1.getLevel().equals("Mega")) // nivel más alto
+        {
             nivel1 = 7;
-        if (peleador1.getLevel().equals("Ultimate"))
+        }
+        if (peleador1.getLevel().equals("Ultimate")) {
             nivel1 = 6;
-        if (peleador1.getLevel().equals("Champion"))
+        }
+        if (peleador1.getLevel().equals("Champion")) {
             nivel1 = 5;
-        if (peleador1.getLevel().equals("Armor"))
+        }
+        if (peleador1.getLevel().equals("Armor")) {
             nivel1 = 4;
-        if (peleador1.getLevel().equals("Rookie"))
+        }
+        if (peleador1.getLevel().equals("Rookie")) {
             nivel1 = 3;
-        if (peleador1.getLevel().equals("In Training"))
+        }
+        if (peleador1.getLevel().equals("In Training")) {
             nivel1 = 2;
+        }
         if (peleador1.getLevel().equals("Fresh")) // nivel más bajo
+        {
             nivel1 = 1;
+        }
         // Peleador 2
-        if (peleador2.getLevel().equals("Mega"))
+        if (peleador2.getLevel().equals("Mega")) {
             nivel2 = 7;
-        if (peleador2.getLevel().equals("Ultimate"))
+        }
+        if (peleador2.getLevel().equals("Ultimate")) {
             nivel2 = 6;
-        if (peleador2.getLevel().equals("Champion"))
+        }
+        if (peleador2.getLevel().equals("Champion")) {
             nivel2 = 5;
-        if (peleador2.getLevel().equals("Armor"))
+        }
+        if (peleador2.getLevel().equals("Armor")) {
             nivel2 = 4;
-        if (peleador2.getLevel().equals("Rookie"))
+        }
+        if (peleador2.getLevel().equals("Rookie")) {
             nivel2 = 3;
-        if (peleador2.getLevel().equals("In Training"))
+        }
+        if (peleador2.getLevel().equals("In Training")) {
             nivel2 = 2;
-        if (peleador2.getLevel().equals("Fresh"))
+        }
+        if (peleador2.getLevel().equals("Fresh")) {
             nivel2 = 1;
+        }
         // Decisión de batalla
         // <Inserte su código aquí>
         System.out.println("¡Resultado de la batalla!");
@@ -310,38 +357,42 @@ public class frmMain extends javax.swing.JFrame {
         });
         System.out.println("LOGS:");
     }
-    
+
     // clase para la hora del sistema. ¡No modificar!
-    public class Reloj extends Thread {
+    /*public class Reloj extends Thread {
+
         Calendar calendario;
-        
+
         @Override
         public void run() {
-             Thread ct = Thread.currentThread();
-        while (ct == h1) {
-            calcula();
-            jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
-            try {
-                Thread.sleep(1000);
+            Thread ct = Thread.currentThread();
+            while (ct == h1) {
+                calcula();
+                jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
+                try {
+                    Thread.sleep(1000);
 
-            } catch (InterruptedException ex) {
-                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
             while (true) {
-                calendario= Calendar.getInstance();
-                if (calendario.get(Calendar.HOUR_OF_DAY)<10)
-                    lblHH.setText(String.valueOf("0"+calendario.get(Calendar.HOUR_OF_DAY)) + " :");
-                else
+                calendario = Calendar.getInstance();
+                if (calendario.get(Calendar.HOUR_OF_DAY) < 10) {
+                    lblHH.setText(String.valueOf("0" + calendario.get(Calendar.HOUR_OF_DAY)) + " :");
+                } else {
                     lblHH.setText(String.valueOf(calendario.get(Calendar.HOUR_OF_DAY)) + " :");
-                if (calendario.get(Calendar.MINUTE)<10)
-                    lblMM.setText(String.valueOf("0"+calendario.get(Calendar.MINUTE)) + " :");
-                else
+                }
+                if (calendario.get(Calendar.MINUTE) < 10) {
+                    lblMM.setText(String.valueOf("0" + calendario.get(Calendar.MINUTE)) + " :");
+                } else {
                     lblMM.setText(String.valueOf(calendario.get(Calendar.MINUTE)) + " :");
-                if (calendario.get(Calendar.SECOND)<10)
-                    lblSS.setText(String.valueOf("0"+calendario.get(Calendar.SECOND)) + " hrs");
-                else
+                }
+                if (calendario.get(Calendar.SECOND) < 10) {
+                    lblSS.setText(String.valueOf("0" + calendario.get(Calendar.SECOND)) + " hrs");
+                } else {
                     lblSS.setText(String.valueOf(calendario.get(Calendar.SECOND)) + " hrs");
+                }
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
@@ -349,22 +400,8 @@ public class frmMain extends javax.swing.JFrame {
                 }
             }
         }
-    }
-    
-   /* @Override
-    public void run() {
-        Thread ct = Thread.currentThread();
-        while (ct == h1) {
-            calcula();
-            jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
-            try {
-                Thread.sleep(1000);
-
-            } catch (InterruptedException ex) {
-                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }*/
+
 
     private void calcula() {
         Calendar calendario = new GregorianCalendar();
@@ -382,7 +419,7 @@ public class frmMain extends javax.swing.JFrame {
         minutos = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
         segundos = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatalla;
     private javax.swing.JButton btnElegir;
