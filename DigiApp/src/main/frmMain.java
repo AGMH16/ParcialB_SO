@@ -24,7 +24,6 @@ import java.util.*;
  * @author Miguel Matul <https://github.com/MigueMat4>
  */
 public class frmMain extends javax.swing.JFrame implements Runnable {
-
     String hora, minutos, segundos, ampm;
     Calendar calendario;
     Thread h1;
