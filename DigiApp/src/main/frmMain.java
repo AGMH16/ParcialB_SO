@@ -302,6 +302,21 @@ public class frmMain extends javax.swing.JFrame implements Runnable {
         // Decisión de batalla
         // <Inserte su código aquí>
         System.out.println("¡Resultado de la batalla!");
+         System.out.println("Nivel jugador1:"+peleador1.getLevel()+" "+ nivel1);
+        System.out.println("Nivel jugador2:"+peleador2.getLevel()+" "+ nivel2);
+        int var1 , var2;
+        var1=nivel1;
+        var2=nivel2;
+       
+        
+        if(nivel1==nivel2){
+            JOptionPane.showMessageDialog(null, "¡Empate!, los dos juagadores tienen el mismo nivel");
+        }else if(nivel1>nivel2){
+             JOptionPane.showMessageDialog(null, "¡Jugador 1 gana la batalla!");
+        }else if(nivel1<nivel2){
+             JOptionPane.showMessageDialog(null, "¡Jugador 2 gana la batalla!");
+        }
+        
     }//GEN-LAST:event_btnBatallaActionPerformed
 
     private void btnGetDigimonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDigimonActionPerformed
