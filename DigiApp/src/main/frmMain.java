@@ -17,13 +17,16 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 /**
  *
  * @author Miguel Matul <https://github.com/MigueMat4>
  */
 public class frmMain extends javax.swing.JFrame {
-    
+    String hora, minutos, segundos, ampm;
+    Calendar calendario;
+    Thread h1;
     Digimon peleador1, peleador2; // digimons que van a pelear
     String[] columnas = {"Nombre", "Nivel"}; // columnas para la tabla
     DefaultTableModel model = new DefaultTableModel(columnas, 0); // tabla a usar
@@ -39,6 +42,8 @@ public class frmMain extends javax.swing.JFrame {
         tblDigimon.setModel(model); // diseña la tabla en base a las columnas definidas
         btnBatalla.setEnabled(false); // no se puede batallar si no hay digimons peleadores
         reloj.start(); // objeto iniciado para la hora del sistema. ¡No modificar!
+        h1 = new Thread((Runnable) this);
+        h1.start();
     }
     
     // clase para elegir a los peleadores
@@ -90,6 +95,7 @@ public class frmMain extends javax.swing.JFrame {
         lblHH = new javax.swing.JLabel();
         lblMM = new javax.swing.JLabel();
         lblSS = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,17 +147,13 @@ public class frmMain extends javax.swing.JFrame {
 
         lblSS.setText("SS");
 
+        jLabel2.setText("Nueva Hora");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(lblDigimon1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDigimon2)
-                .addGap(70, 70, 70))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -163,8 +165,11 @@ public class frmMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSS)
                 .addGap(56, 56, 56))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(lblDigimon1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(236, 236, 236)
                         .addComponent(btnElegir))
@@ -174,7 +179,11 @@ public class frmMain extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
                         .addComponent(btnBatalla, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(lblDigimon2))
+                .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,9 +206,14 @@ public class frmMain extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDigimon1)
                     .addComponent(lblDigimon2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
-                .addComponent(btnBatalla, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnBatalla, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(50, 50, 50))))
         );
 
         pack();
@@ -303,6 +317,17 @@ public class frmMain extends javax.swing.JFrame {
         
         @Override
         public void run() {
+             Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
+            try {
+                Thread.sleep(1000);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
             while (true) {
                 calendario= Calendar.getInstance();
                 if (calendario.get(Calendar.HOUR_OF_DAY)<10)
@@ -326,11 +351,44 @@ public class frmMain extends javax.swing.JFrame {
         }
     }
     
+   /* @Override
+    public void run() {
+        Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            jLabel2.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
+            try {
+                Thread.sleep(1000);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }*/
+
+    private void calcula() {
+        Calendar calendario = new GregorianCalendar();
+        Date fechaHoraActual = new Date();
+
+        calendario.setTime(fechaHoraActual);
+        ampm = calendario.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+        if (ampm.equals("PM")) {
+            int h = calendario.get(Calendar.HOUR_OF_DAY) - 12;
+            hora = h > 9 ? "" + h : "0" + h;
+
+        } else {
+            hora = calendario.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendario.get(Calendar.HOUR_OF_DAY) : "0" + calendario.get(Calendar.HOUR_OF_DAY);
+        }
+        minutos = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatalla;
     private javax.swing.JButton btnElegir;
     private javax.swing.JButton btnGetDigimon;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDigimon1;
