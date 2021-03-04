@@ -91,7 +91,6 @@ public final class DigiWorld {
                 }
                 if (D.charAt(1) == D2.charAt(1)) {
                     if (D.charAt(2) < D2.charAt(2)) {
-                        System.out.println("si entra");
                         aux = d;
                         digimons.set(j + 1, d2);
                         digimons.set(j, aux);
