@@ -23,11 +23,12 @@ import java.util.*;
  *
  * @author Miguel Matul <https://github.com/MigueMat4>
  */
-public class frmMain extends javax.swing.JFrame  {
+public class frmMain extends javax.swing.JFrame {
+
     Hora HiloNum = new Hora();
     //String hora, minutos, segundos, ampm;
-  //  Calendar calendario;
-   // Thread h1;
+    //  Calendar calendario;
+    // Thread h1;
     Digimon peleador1, peleador2; // digimons que van a pelear
     String[] columnas = {"Nombre", "Nivel"}; // columnas para la tabla
     DefaultTableModel model = new DefaultTableModel(columnas, 0); // tabla a usar
@@ -42,15 +43,19 @@ public class frmMain extends javax.swing.JFrame  {
         initComponents();
         tblDigimon.setModel(model); // diseña la tabla en base a las columnas definidas
         btnBatalla.setEnabled(false); // no se puede batallar si no hay digimons peleadores
-         HiloNum.setjLabel(jLabel2);
-        HiloNum.start();
+        HiloNum.setjLabel(jLabel2);
+        HiloNum.activo = true;
+        if (HiloNum.activo = true) {
+            HiloNum.start();
+
+        }
         //reloj.start(); // objeto iniciado para la hora del sistema. ¡No modificar!
-       // h1 = new Thread((Runnable) this);
-      //  h1.start();
+        // h1 = new Thread((Runnable) this);
+        //  h1.start();
     }
 
- //   @Override
-  /*  public void run() {
+    //   @Override
+    /*  public void run() {
         //Acá
         Thread ct = Thread.currentThread();
         while (ct == h1) {
@@ -64,7 +69,6 @@ public class frmMain extends javax.swing.JFrame  {
             }
         }
     }*/
-
     // clase para elegir a los peleadores
     public class RumbleArena {
 
@@ -88,7 +92,7 @@ public class frmMain extends javax.swing.JFrame  {
             lblDigimon1.setText(peleador1.getName());
             // código para elegir al segundo peleador
             // <Inserte su código aquí>
-             int digielecto2 = (int) ((Math.random() * ((yggdrasill.getDigimons().size() - 1) - 0)) + 0);
+            int digielecto2 = (int) ((Math.random() * ((yggdrasill.getDigimons().size() - 1) - 0)) + 0);
             peleador2 = yggdrasill.getDigimons().get(digielecto2);
             try {
                 URL url = new URL(peleador2.getImg());
@@ -101,7 +105,7 @@ public class frmMain extends javax.swing.JFrame  {
                 Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("¡Peladores listos para la batalla!");
-             JOptionPane.showMessageDialog(null, "¡Peladores listos para la batalla!");
+            JOptionPane.showMessageDialog(null, "¡Peladores listos para la batalla!");
             btnElegir.setEnabled(true);
             btnBatalla.setEnabled(true);
         }
@@ -305,21 +309,20 @@ public class frmMain extends javax.swing.JFrame  {
         // Decisión de batalla
         // <Inserte su código aquí>
         System.out.println("¡Resultado de la batalla!");
-         System.out.println("Nivel jugador1:"+peleador1.getLevel()+" "+ nivel1);
-        System.out.println("Nivel jugador2:"+peleador2.getLevel()+" "+ nivel2);
-        int var1 , var2;
-        var1=nivel1;
-        var2=nivel2;
-       
-        
-        if(nivel1==nivel2){
+        System.out.println("Nivel jugador1:" + peleador1.getLevel() + " " + nivel1);
+        System.out.println("Nivel jugador2:" + peleador2.getLevel() + " " + nivel2);
+        int var1, var2;
+        var1 = nivel1;
+        var2 = nivel2;
+
+        if (nivel1 == nivel2) {
             JOptionPane.showMessageDialog(null, "¡Empate!, los dos juagadores tienen el mismo nivel");
-        }else if(nivel1>nivel2){
-             JOptionPane.showMessageDialog(null, "¡Jugador 1 gana la batalla!");
-        }else if(nivel1<nivel2){
-             JOptionPane.showMessageDialog(null, "¡Jugador 2 gana la batalla!");
+        } else if (nivel1 > nivel2) {
+            JOptionPane.showMessageDialog(null, "¡Jugador 1 gana la batalla!");
+        } else if (nivel1 < nivel2) {
+            JOptionPane.showMessageDialog(null, "¡Jugador 2 gana la batalla!");
         }
-        
+
     }//GEN-LAST:event_btnBatallaActionPerformed
 
     private void btnGetDigimonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDigimonActionPerformed
@@ -418,9 +421,7 @@ public class frmMain extends javax.swing.JFrame  {
             }
         }
     }*/
-
-
-  /*  private void calcula() {
+ /*  private void calcula() {
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 

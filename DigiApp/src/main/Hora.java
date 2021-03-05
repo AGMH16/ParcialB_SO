@@ -13,6 +13,7 @@ public class Hora extends Thread{
     String hora, minutos, segundos, ampm;
     Calendar calendario;
     Thread h1;
+    boolean activo=false;
     
      public JLabel getjLabel() {
         return jLabel;
@@ -41,7 +42,7 @@ public class Hora extends Thread{
      @Override
     public void run() {
         Thread ct = Thread.currentThread();
-        while (ct == h1) {
+        while (activo==true) {
             calcula();
             jLabel.setText(hora + ":" + minutos + ":" + segundos + " " + ampm);
             try {
