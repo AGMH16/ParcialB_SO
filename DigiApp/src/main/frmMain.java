@@ -23,10 +23,11 @@ import java.util.*;
  *
  * @author Miguel Matul <https://github.com/MigueMat4>
  */
-public class frmMain extends javax.swing.JFrame implements Runnable {
-    String hora, minutos, segundos, ampm;
-    Calendar calendario;
-    Thread h1;
+public class frmMain extends javax.swing.JFrame  {
+    Hora HiloNum = new Hora();
+    //String hora, minutos, segundos, ampm;
+  //  Calendar calendario;
+   // Thread h1;
     Digimon peleador1, peleador2; // digimons que van a pelear
     String[] columnas = {"Nombre", "Nivel"}; // columnas para la tabla
     DefaultTableModel model = new DefaultTableModel(columnas, 0); // tabla a usar
@@ -41,13 +42,15 @@ public class frmMain extends javax.swing.JFrame implements Runnable {
         initComponents();
         tblDigimon.setModel(model); // diseña la tabla en base a las columnas definidas
         btnBatalla.setEnabled(false); // no se puede batallar si no hay digimons peleadores
+         HiloNum.setjLabel(jLabel2);
+        HiloNum.start();
         //reloj.start(); // objeto iniciado para la hora del sistema. ¡No modificar!
-        h1 = new Thread((Runnable) this);
-        h1.start();
+       // h1 = new Thread((Runnable) this);
+      //  h1.start();
     }
 
-    @Override
-    public void run() {
+ //   @Override
+  /*  public void run() {
         //Acá
         Thread ct = Thread.currentThread();
         while (ct == h1) {
@@ -60,7 +63,7 @@ public class frmMain extends javax.swing.JFrame implements Runnable {
                 Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
+    }*/
 
     // clase para elegir a los peleadores
     public class RumbleArena {
@@ -417,7 +420,7 @@ public class frmMain extends javax.swing.JFrame implements Runnable {
     }*/
 
 
-    private void calcula() {
+  /*  private void calcula() {
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
@@ -432,7 +435,7 @@ public class frmMain extends javax.swing.JFrame implements Runnable {
         }
         minutos = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
         segundos = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatalla;
